@@ -1,0 +1,56 @@
+servers=[
+   {
+    :hostname => "master-killer",
+    :ip => "192.168.56.108",
+    :type => "k8s",
+    :ram => 2024,
+    :cpu => 2
+  }
+]
+$script = <<-SCRIPT
+      sudo apt-get update && sudo apt-get install -y apt-transport-https curl ca-certificates  software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+      sudo apt update
+      sudo apt-get install -y docker-ce
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      sudo echo '{"exec-opts": ["native.cgroupdriver=systemd"]}' >> /etc/docker/daemon.json
+      sudo systemctl restart docker
+    SCRIPT
+
+Vagrant.configure("2") do |config|
+
+   servers.each do |machine|
+    
+       
+    config.vm.define machine[:hostname] do |node|
+        
+        node.vm.box = "bento/ubuntu-18.04"
+        node.vm.hostname = machine[:hostname]
+        node.vm.network "private_network",  ip: machine[:ip]
+        node.vm.provider "virtualbox" do |vb|
+            vb.customize ["modifyvm", :id, "--memory", machine[:ram]]
+            vb.customize ["modifyvm", :id, "--cpus", machine[:cpu]]
+            vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+            vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+            vb.customize ["modifyvm", :id, "--name", machine[:hostname]]
+        end
+        #node.vm.provision :shell, inline: $script
+
+        #node.vm.provision :shell, :path => "common.sh"
+        # node.vm.provision :shell, :inline => hosts
+        if machine[:type] == 'k8s'
+          node.vm.provision :shell, :path => "cks-course-environment/cluster-setup/latest/install_master.sh"
+        end
+        
+
+        
+    end
+
+    
+
+  end
+  
+
+end
