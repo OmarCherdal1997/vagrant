@@ -175,6 +175,23 @@ chmod 700 get_helm.sh
  helm repo add nginx-stable https://helm.nginx.com/stable
  helm repo update
  helm install nginx-ingress nginx-stable/nginx-ingress
+
+ ### Install Kubeseal
+
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.16.0/kubeseal-linux-amd64 -O kubeseal
+sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+# helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+# helm repo update  
+# helm install sealed-secrets https://bitnami-labs.github.io/sealed-secrets #--set service.port=8081
+
+wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.3/controller.yaml
+k apply -f controller.yaml
+kubeseal --fetch-cert > sealed-cert.pem
+
+## kubeseal --cert sealed-cert.pem -o yaml --scope strict < sc.yaml > sealed.yaml
+
+
+
  
  
  
