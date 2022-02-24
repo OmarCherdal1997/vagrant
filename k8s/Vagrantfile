@@ -3,7 +3,7 @@ servers=[
     :hostname => "master",
     :ip => "192.168.56.108",
     :type => "master",
-    :ram => 2024,
+    :ram => 4024,
     :cpu => 2
   }
   # ,{

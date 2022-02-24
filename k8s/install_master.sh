@@ -164,7 +164,7 @@ kubeadm token create --print-join-command --ttl 0
 ## Aliases
 
 alias k='kubectl'
-
+k taint node master node-role.kubernetes.io/master-
 ## Install Helm 
 
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
