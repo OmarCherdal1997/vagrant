@@ -1,2 +1,4 @@
 ./*/.vagrant/*
 */*/.vagrant
+Ansible/.vagrant/
+k8s/.vagrant/
