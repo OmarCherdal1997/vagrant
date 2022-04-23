@@ -1,29 +1,19 @@
 servers=[
-  # {
-  #   :hostname => "ans-controller",
-  #   :ip => "192.168.56.110",
-  #   :type => "controller",
-  #   :ram => 1024,
-  #   :cpu => 1
-  # },
    {
-    :hostname => "ans1",
+    :hostname => "ES",
     :ip => "192.168.56.110",
-    :type => "target",
-    :ram => 512,
-    :cpu => 1
+    :ram => 3024,
+    :cpu => 2
   },
   {
-    :hostname => "ans2",
+    :hostname => "logstash",
     :ip => "192.168.56.111",
-    :type => "target",
     :ram => 512,
     :cpu => 1
 },
   {
-    :hostname => "ans3",
+    :hostname => "target",
     :ip => "192.168.56.112",
-    :type => "target",
     :ram => 512,
     :cpu => 1
 }
@@ -48,9 +38,11 @@ Vagrant.configure("2") do |config|
             vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
             vb.customize ["modifyvm", :id, "--name", machine[:hostname]]
         end
-        # if machine[:type] == 'controller'
-        #   node.vm.provision :shell, :path => "configure_controller.sh"
-        #     end
+        # if machine[:hostname] == "ES"
+        #   node.vm.provision :shell, :path => "install_es.sh"
+        #   node.vm.provision :shell, :path => "install_logstash.sh"
+        #   node.vm.provision :shell, :path => "install_kibana.sh"
+        # end
         
 
         

@@ -2,3 +2,5 @@
 */*/.vagrant
 Ansible/.vagrant/
 k8s/.vagrant/
+ELK/.vagrant/
+JNS/.vagrant/
