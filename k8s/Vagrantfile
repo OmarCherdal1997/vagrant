@@ -5,6 +5,13 @@ servers=[
     :type => "master",
     :ram => 4024,
     :cpu => 2
+  },
+  {
+    :hostname => "master21",
+    :ip => "192.168.56.109",
+    :type => "master",
+    :ram => 4024,
+    :cpu => 2
   }
   # ,{
   #   :hostname => "slave",
@@ -50,7 +57,7 @@ Vagrant.configure("2") do |config|
         # node.vm.provision :shell, :inline => hosts
         if machine[:type] == 'master'
           node.vm.provision :shell, :path => "install_master.sh"
-          config.vm.provision :shell, :path => "configure_nfs.sh", :args => [machine[:ip]]
+          #config.vm.provision :shell, :path => "configure_nfs.sh", :args => [machine[:ip]]
         end
         
 
